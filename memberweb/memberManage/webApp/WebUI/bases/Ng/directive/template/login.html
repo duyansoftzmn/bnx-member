@@ -1,0 +1,62 @@
+<div class="modal fade" id="{{elementId}}" tabindex="-1" role="dialog" aria-labelledby="loginLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="{{elementId}}SignIn">
+                    <div class="modal-header">
+                        <a href="#{{elementId}}SignUp" role="tab" data-toggle="tab" class="close" ng-if="isSignUp">{{$parent.syi18n.t_signUp||'Sign Up'}}</a>
+                        <h4 class="modal-title" id="loginLabel">{{$parent.syi18n.t_login||'Login'}}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" name="loginForm" ng-submit="login(user)">
+                            <div ng-show="msg.content" class="alert alert-{{msg.type}}" role="alert">{{msg.content}}</div>
+                            <div class="form-group">
+                                <label for="account">{{$parent.syi18n.t_phone?$parent.syi18n.t_phone:'Phone'}} / {{$parent.syi18n.t_email?$parent.syi18n.t_email:'Email'}}</label>
+                                <input id="account" type="text" class="form-control" ng-model="user.account" placeholder="{{$parent.syi18n.t_accountPlaceHolder||'Enter phone or email as account'}}" required>
+                            </div>
+                            <div id="dynamicPasswordOption" style="float:right;position: relative;top:-5px;" ng-if="verifyLogin&&isAccountPhone()" >
+                                <a class="btn btn-info btn-xs" ng-click="getVerifyCode()" ng-disabled="verifyDisabled">{{$parent.syi18n.t_dynamicPassword||'Dynamic Pwd'}}<span id="verifyCountDown"></span></a>
+                            </div>
+                            <div class="form-group">
+                                <label for="password"><span ng-click="switchChannel('password')" style="{{{verifyCode:'color:#dae1e8;'}[loginChannel]}}">{{$parent.syi18n.t_password?$parent.syi18n.t_password:'Password'}}</span> / <span  ng-click="switchChannel('verifyCode')" style="{{{password:'color:#dae1e8;'}[loginChannel]}}">{{$parent.syi18n.t_verifycode?$parent.syi18n.t_verifycode:'Verify Code'}}</span></label>
+                                <input  id="password" type="password" class="form-control" ng-model="user.password" placeholder="{{$parent.syi18n.t_passwordPlaceHolder||'Enter Password'}}"  required>
+                            </div>
+                            <div>
+                                <a href="http://www.duyansoft.com/sign#/forgetpassword" class="pass-fgtpwd pull-right" style="color:#3BB0D5">{{$parent.syi18n.t_forgetPassword||'Forget Password'}} ?</a>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block" ng-disabled="logining || loginValiad()" disabled="disabled">{{$parent.syi18n.t_signIn||'Sign In'}}</button>
+                            <div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="{{elementId}}SignUp"  ng-if="isSignUp">
+                    <div class="modal-header">
+                        <a href="#{{elementId}}SignIn" role="tab" data-toggle="tab" class="close">{{$parent.syi18n.t_signIn||'Sign In'}}</a>
+                        <h4 class="modal-title" id="signUpLabel">{{$parent.syi18n.t_signUp||'Sign Up'}}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" name="joinForm" ng-submit="signUp(user)" style="width:50%; margin:0 auto;">
+                            <div ng-show="msg.content" class="alert alert-{{msg.type}}" role="alert">{{msg.content}}</div>
+                            <div class="form-group">
+                                <label for="account-sign-up">{{$parent.syi18n.t_phone?$parent.syi18n.t_phone:'Phone'}} / {{$parent.syi18n.t_email?$parent.syi18n.t_email:'Email'}}</label>
+                                <input id="account-sign-up" name="signUpAccount" type="text" class="form-control" ng-style="validStyle[joinForm.signUpAccount.$pristine||joinForm.signUpAccount.$valid]" ng-model="user.account" ng-pattern="/(^[0-9]{11}$)|(\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)/" placeholder="{{$parent.syi18n.t_accountPlaceHolder||'Enter phone or email as account'}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password-sign-up">{{$parent.syi18n.t_password?$parent.syi18n.t_password:'Password'}}</label>
+                                <input type="password" id="password-sign-up" class="form-control" ng-model="user.password" placeholder="{{$parent.syi18n.t_passwordPlaceHolder||'Enter Password'}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label" for="confirmPassword">{{$parent.syi18n.t_confirmYourPassword||"Confirm your Password"}}<span class="errorTip"></span></label>
+                                <input type="password" class="form-control" id="confirmPassword" name="signUpConfirm" ng-model="user.confirmPassword" ng-style="validStyle[joinForm.signUpConfirm.$pristine||user.password ==user.confirmPassword]" placeholder="{{$parent.syi18n.t_confirmYourPassword||'Confirm your Password'}}" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block" ng-disabled="joinForm.$invalid || isPwdMatch(user) || joining">{{$parent.syi18n.t_submit||'Submit'}}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>

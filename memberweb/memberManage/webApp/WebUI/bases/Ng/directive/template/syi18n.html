@@ -1,0 +1,12 @@
+<li id="languageSelector" class="dropdown">
+    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" style="padding-left: 10px; padding-right: 10px;');" ng-bind="syi18n.t_languages">&nbsp;<b class="caret"></b></a>
+    <ul class="dropdown-menu languageList" style="text-align: center;">
+        <li ng-repeat="lang in language.existLangs" ng-click = "language.switchLang(lang)">
+            <a href="javascript:;">
+                <span class="icon-small-checkmark glyphicon glyphicon-ok" ng-if="lang.code == language.currentLang.code">&nbsp;</span>
+                <span ng-if="lang.code != language.currentLang.code">&nbsp;&nbsp;&nbsp;</span>
+                <span style="width:50px;display: inline-block;">{{lang.name}}</span>
+            </a>
+        </li>
+    </ul>
+</li>

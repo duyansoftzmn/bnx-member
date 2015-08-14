@@ -1,0 +1,34 @@
+<div class="textareaDialog" id="<%= contents.id%>" title="<%=attributes.title%>" hidden>
+    <div class="wgTable table-responsive">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <%_.each(contents.keyMap, function(map){%>
+                <th><%if(!_.isEmpty(map.class)){ %><i class="<%=map.class%>"></i><%}%><%=map.lang%></th>
+                <%})%>
+                <% if (attributes.toolColumn.isEnable){%>
+                <th class="toolColumn head"><%if(!_.isEmpty(attributes.toolColumn.class)){ %><i class="<%=attributes.toolColumn.class%>"></i><%}%></th>
+                <%}%>
+            </tr>
+            </thead>
+            <tbody>
+            <% var i = 0;%>
+            <%_.each(contents.rows, function(data){%>
+            <tr>
+                <%_.each(contents.keyMap, function(map){%>
+                <td><%=data[map.key]%></td>
+                <%})%>
+                <% if (attributes.toolColumn.isEnable){%>
+                <td class="toolColumn body">
+                    <%_.each(attributes.toolColumn.tools, function(tool){%>
+                    <a href="javascript:;" index="<%=i%>" key="<%=tool.key%>"><%if(!_.isEmpty(tool.class)){ %><i class="<%=tool.class%>"></i><%}%> <%=tool.lang%></a>
+                    <%})%>
+                </td>
+                <%}%>
+            </tr>
+            <% i++;%>
+            <%})%>
+            </tbody>
+        </table>
+    </div>
+</div>

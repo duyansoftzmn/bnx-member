@@ -1,0 +1,54 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  list-style: none outside none;
+  width: 100%;
+  height: 100%;
+  color: #838181;
+}
+h1,h2,h3,h4,h5,h6 {
+  margin: 0;
+}
+#findPassword{
+  width: 100%;
+  height: 100%;
+  max-width: 960px;
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
+  margin:  0 auto;
+  padding: 60px 10px 0;
+  box-shadow: 0 0 30px;
+  background:#F9F9F9;
+}
+
+#findPassword form {
+  width: 100%;
+  max-width: 768px;
+  padding: 10px;
+  margin: 0 auto;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.navbar-header{
+  height: 100%;
+  width: 152px;
+}
+
+.navbar-brand img{
+  height: 30px;
+  margin: -5px 0;
+}
+
+.dy-logo {
+  width: 155px;
+  height: 32px;
+  margin-right: 18px;
+  position: relative;
+  top: 10px;
+  left: 5px;
+  background-size: 100%;
+}

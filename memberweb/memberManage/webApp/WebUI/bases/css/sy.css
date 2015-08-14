@@ -1,0 +1,517 @@
+*[hidden] { display: none; }
+
+.navBtnIconUTextD li a {
+    border-bottom: 1px solid #243235;
+    color: #9E99AA;
+    display: block;
+    font-size: 12px;
+    height: 58px;
+    padding-top: 12px;
+    text-align: center;
+    width: 70px;
+}
+
+.ibtn {
+     cursor: pointer;
+}
+
+/* nav top fix 1*/
+.navbar {
+    font-family: sans-serif;
+    font-size: 14px;
+    z-index: 1000;
+}
+/* MULTI-LEVEL DROPDOWNS FOR BOOTSTRAP */
+.dropdown-menu>li /* To prevent selection of text */
+{   position:relative;
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+    /* Rules below not implemented in browsers yet */
+    -o-user-select: none;
+    user-select: none;
+    cursor:pointer;
+}
+.dropdown-menu .sub-menu
+{
+    left: 100%;
+    position: absolute;
+    top: 0;
+    display:none;
+    margin-top: -1px;
+    border-top-left-radius:0;
+    border-bottom-left-radius:0;
+    border-left-color:#fff;
+    box-shadow:none;
+}
+.right-caret:after
+{   content:"";
+    border-bottom: 4px solid transparent;
+    border-top: 4px solid transparent;
+    border-left: 4px solid orange;
+    display: inline-block;
+    height: 0;
+    opacity: 0.8;
+    vertical-align: middle;
+    width: 0;
+    margin-left:5px;
+}
+.left-caret:after
+{   content:"";
+    border-bottom: 4px solid transparent;
+    border-top: 4px solid transparent;
+    border-right: 4px solid orange;
+    display: inline-block;
+    height: 0;
+    opacity: 0.8;
+    vertical-align: middle;
+    width: 0;
+    margin-left:5px;
+}
+
+
+.dragItem.gray{
+    border:1px solid #A3A3A3;
+    background: #D9D5C5;
+    background: -webkit-gradient(linear, left top, left bottom, from(#DDDCD9), to(#D9D5C5));
+    background: -moz-linear-gradient(top, #DDDCD9, #D9D5C5);
+}
+
+.dragItem.white{
+    border:1px solid #C4C2C2;
+    background: #fff;
+    -webkit-box-shadow: 0px 1px 4px #BCC0C0;
+    -moz-box-shadow: 0px 1px 4px #BCC0C0;
+    box-shadow: 0px 1px 4px #BCC0C0;
+    color: #727070;
+}
+
+.dragItem.white.loadmoreBtn {
+    height: 109px;
+    background: #EDEFF3;
+    line-height: 104px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.dragItem.active{
+    border:1px solid #F9B23E;
+    background: #FCD9A1;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FCEBCF), to(#FCD9A1));
+    background: -moz-linear-gradient(top, #FCEBCF, #FCD9A1);
+}
+
+/* datagrid response */
+
+.datagrid {
+    width: 300px;
+    margin: 0 0 13px 10px;
+    float: left;
+    padding: 2px 0 0 2px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.datagrid i:hover{
+    color: #428bca;
+}
+
+.datagrid  hr{
+    margin: 10px 0;
+}
+
+.datagrid .btnsBar{
+    text-align: right;
+    padding-right: 11px;
+    color: #333;
+    position: relative;
+}
+
+.datagrid .btnsBar .left{
+    position: absolute;
+    left: 0px;
+    padding-left: 10px;
+}
+
+.datagrid .btnsBar .left i{
+    margin-right: 5px;
+}
+
+.datagrid .detailpop {
+    top: 103px;
+    width: 262px;
+    left: 35px;
+}
+
+.datagrid .detailpop label{
+    font-weight: bold;
+}
+
+.datagrid .detailpop .arrow{
+    right: 3px;
+    left: auto;
+}
+
+.datagridParamText{
+    font-size: 11px;
+}
+
+.datagrid .popover-title { display: none; }
+
+.datagrid .viewParam{
+    margin: 10px;
+}
+
+.toolItems{
+    position: absolute;
+    right: 9px;
+    top: 0px;
+    color: #333;
+}
+
+.toolbar .toolInputGroup {
+    float:right;
+    width: 318px;
+}
+
+.toolbar .toolBtns {
+    float:right;
+    margin: 7px 6px 0 0;
+}
+
+#searchColumn{
+    width: 105px;
+}
+
+#searchText {
+    width: 110px;
+    margin-right: 1px;
+}
+
+.toolbar .dropdown-menu{
+    text-align: left;
+}
+
+.toolbar .btn-default{
+    margin-right: 1px;
+}
+
+.datagrid  .btn{
+    padding: 6px 11px;
+}
+
+.datagrid .vTitle {
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.datagrid .vContent {
+    padding: 2px 3px;
+}
+
+.datagrid .showAll {
+    list-style: none outside none;
+}
+
+.datagrid .showAll b {
+    padding-right: 2px;
+}
+
+#advSearch {
+    padding-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#advSearch li{
+    float : left;
+    list-style: none outside none;
+    margin-left: 10px;
+}
+
+#advSearch .sortAmount{
+     margin-left: 10px;
+    cursor: pointer;
+ }
+
+#advSearch .sortAmount:hover, #advSearch .sortAmount.active{
+    color: #fff;
+}
+
+.dgItems{
+    width: 95%;
+    margin: 24px auto 0 auto;
+}
+
+.dgItemsTable tbody tr:hover{
+      background: #D0E5F5;
+}
+
+.dgItemsTable .active td{
+    background: #FCD9A1;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FCEBCF), to(#FCD9A1));
+    background: -moz-linear-gradient(top, #FCEBCF, #FCD9A1);
+}
+
+.sortBtn {
+    cursor: pointer;
+}
+
+.sortBtn:hover{
+    color: #eea236;
+}
+
+.centerDiv {
+    font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+    width: 100%;
+    text-align: left;
+    margin: auto;
+    padding: 9px 14px;
+    background-color: #f7f7f9;
+    border: 1px solid #e1e1e8;
+    border-radius: 4px;
+}
+
+.centerDiv h2{
+    color: #c9c9c9;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.centerImg{
+    background: url("../img/ajaxLoader.gif") no-repeat scroll 50% 50% transparent;
+    height: 100%;
+    width: 100%;
+    min-height: 20px;
+}
+
+/*select table*/
+
+.selectable .ui-selecting { background: #FECA40; }
+.selectable .ui-selected { background: #F39814; color: white; }
+.selectable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+.selectable li { margin: 3px; padding-left:10px;font-size: 14px;line-height: 34px; position: relative; background: #F0F1FA}
+.selectable li.selected {
+    color: #3c763d;
+    background: #dff0d8;
+    border-color: #d6e9c6;
+}
+.selectable li .status{
+    position: absolute;
+    right: 10px;
+    top: 0;
+    color: #3c763d;
+}
+
+/*mobile table*/
+.slider {
+    width: 50%;
+    height: 20px;
+}
+.mtable.form-group{
+    clear:both;
+    position: relative;
+}
+.mtable .ui-slider-handle {
+    top: -2px;
+}
+.mtable .ui-slider {
+    height: 20px;
+    margin:0;
+}
+
+.mtable .inputText {
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+}
+
+.mtable .inputText.w30p {
+    width: 30%;
+}
+
+.mtable .inputSliderText{
+    height: 20px;
+    line-height: 20px;
+    width: 30px;
+    position: absolute;
+    right: 21%;
+    text-align: center;
+    font-size: 12px;
+}
+
+.mtable label {
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.mtable .inputTextArea i{ cursor: pointer;}
+.mtable .inputTextArea .edit{ color: #1494b0;}
+.mtable .inputTextArea .update{ color: #419641;}
+.mtable .inputTextArea .roleback{ color: #9D2900;}
+
+.mtable .sliderArea{margin-bottom: 10px}
+
+/*datagrid table*/
+.wgTable .toolColumn {
+    text-align: center;
+}
+
+.toolColumn .btnIcon{
+    color: #428bca;
+    cursor: pointer;
+}
+
+.toolColumn .btnIcon:hover{
+    color: #F7D786;
+}
+
+.toolColumn .btnIcon.disabled{
+    color: #D9DCDF;
+    cursor: default;
+}
+
+.ui-widget-content .toolColumn a {
+    color: #428bca;
+}
+
+ /*list selector*/
+.listSelector .toolBar {
+    text-align: center;
+    margin: 8px 0 17px;
+}
+
+.listSelector .body .toolBar {
+    text-align: left;
+    color: #888787;
+}
+
+.listSelector .body .left,.listSelector .body .right  {
+    list-style: none outside none;
+    border: 1px solid #e1e1e8;
+    padding: 20px;
+}
+
+.listSelector .list{
+    margin: 0px;
+    padding: 3px;
+    list-style: none outside none;
+    background: #F0F1FA;
+    min-height: 40px;
+    border: #DFDFE0 1px solid;
+}
+
+.listSelector .list li{
+    border-bottom: #DFDFE0 1px solid;
+}
+
+.listSelector .list li.selected {
+    color: #3c763d;
+    background: #dff0d8;
+    border-bottom: #d6e9c6 1px solid;
+    position: relative;
+}
+
+.listSelector .list li .status {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    color: #3c763d;
+}
+
+.listSelector .list li.selected:hover {background: #dff0d8; }
+
+.listSelector .list li:hover{
+     background: #E9E9E9;
+}
+
+.listSelector .list.listError{
+    border: #EC1515 1px solid;
+}
+
+/*file Button*/
+
+.syUpload{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    height: 30px;
+    line-height: 30px;
+    width: auto;
+    border: 0;
+    border-radius: 0;
+}
+
+.fileButton {
+    position: relative;
+}
+
+/* textarea Dialog  */
+
+.textareaDialog textarea{
+    width:100%;
+    height: 300px;
+}
+
+/* comments1 */
+
+.comments1 .node{
+    background: #fff url("/WebUI/bases/img/commitStartNode.jpg") 45% center no-repeat;
+    height: 29px;
+}
+
+.comments1More{
+    font-weight: bold;
+    color: #1B73E2;
+    cursor: default;
+}
+
+.comments1 li{
+    position: relative;
+    background: #E2E9EF;
+    width: 99px;
+    height: 45px;
+    padding: 13px 0 0 0;
+    margin: 0 0 50px;
+    list-style: none;
+    text-align: center;
+    left: 41%;
+}
+
+
+.comments1 .popover{
+    display: block;
+    width: 283px;
+    top: -24px;
+}
+
+.comments1 .popover.right{left: 119px;}
+
+.comments1 .popover.left{left: -282px;}
+
+.comments1 .popover img{
+    margin: 0 10px;
+}
+
+.comments1 .popover h3{
+    font-size: 13px;
+    padding: 0 3px;
+}
+
+.comments1 .popover{display:block;}
+
+.comments1 .popover .content{
+    padding: 0 3px;
+    font-size: 12px;
+}
+
+.comments1LoadMore{
+    width: 60%;
+    margin: 30px 0;
+}

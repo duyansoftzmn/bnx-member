@@ -1,0 +1,17 @@
+<div class="" id="example" ng-click="show()" ng-if="knowledgeIfActive">
+    <a href="{{knowledgeUrl}}" ng-if="knowledgeShow=='blank'" target="_blank"><span class="{{knowledgeIcon}}"></span></a>
+    <button ng-if="knowledgeShow=='modal'" style="" type="button" id="example-text" class="close" data-toggle="modal" data-target="#{{example}}"><span class="{{knowledgeIcon}}"></span></button>
+    <div class="modal fade" id="{{example}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+              </div>
+              <div class="modal-body">
+                <iframe src="{{knowledgeUrl}}" frameborder="0" width="{{knowledgeWidth}}" height="{{knowledgeHeight}}"></iframe>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

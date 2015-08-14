@@ -1,0 +1,36 @@
+<% if(contents.rows.length == 0){ %>
+    <div class="alert alert-warning fade in">
+        <strong>Empty!</strong>
+    </div>
+<%} else {%>
+    <div class="tabTableToolbar">
+    <%
+    var i = 0;
+    _.each(attributes.tools, function(tool){
+    %>
+        <a href="javascript:;" class="st1handle<%=tool.key%>" key="<%=tool.key%>"><i class="<%=tool.class%>"></i> <%=tool.lang%></a>  &nbsp;
+    <% })%>
+    </div>
+    <ol id="<%= selector%>" class="selectable">
+        <%
+            var j = 0;
+            _.each(contents.rows, function(msg){ %>
+            <li index="<%=j%>" itemId="<%=msg.ID%>" class="ui-widget-content" <% if (!!contents.hightlightKey){%> <%=contents.hightlightKey%>="<%=msg[contents.hightlightKey]%>"<%}%>  >
+                <%
+                i = 0;
+                _.each(attributes.keyMap, function(map){
+                %>
+                    <% if (i != 0){%>  : <%}%>
+                    <% if (!_.isEmpty(map.class)){%> <i class="<%=map.class%>"></i><%}%>
+                    <%= msg[map.key] %>
+                <%
+                    i++;
+                })%>
+                <div hidden class="status"><i class="fa fa-check"></i></div>
+            </li>
+        <%
+            j++;
+            })
+        %>
+    </ol>
+<%}%>

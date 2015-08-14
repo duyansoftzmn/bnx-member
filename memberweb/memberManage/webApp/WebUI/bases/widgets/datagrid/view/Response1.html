@@ -1,0 +1,80 @@
+<%
+var toolbarDropList =[];
+var advSearchContent = [];
+var totalItem = 0;
+_.each(contents.keyMap, function(map) {
+       toolbarDropList.push('<li class="searchKey" key="'+map.key+'"><a href="#"><i class="'+map.class+'"></i> '+map.lang+'</a></li>');
+       advSearchContent.push('<li> <input class="advFilterItem" key="'+map.key+'" placeholder="'+map.lang+'" type="text"/> <i hidden sort="'+attributes.order+'" class="sortBtn fa fa-sort-'+attributes.order+'"></i></li>');
+       totalItem ++;
+});
+
+var toolbarDropListTmp = toolbarDropList.join("");
+var advSearchContentTmp = advSearchContent.join("");
+%>
+
+<div class="toolbar row">
+    <div class="toolInputGroup input-group">
+        <div class="input-group-btn">
+            <i class="fa fa-eye"></i>
+            <button type="button" id="searchColumn" key="<%=contents.defaultKey%>" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><%=contents.keyMap[contents.defaultKey].lang%> <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+                <%= toolbarDropListTmp%>
+                <% if (totalItem > 1) {%>
+                    <li class="divider"></li>
+                    <li key="All"><a href="#"><i class="fa fa-th"></i> <%=lang.t_all%></a></li>
+                <%}%>
+            </ul>
+        </div><!-- /btn-group -->
+        <input type="text" id="searchText" class="form-control" placeholder="<%=lang.t_search%>">
+        <button type="button" id="searchBtn" class="btn btn-default"><i class="fa fa-search"></i></button>
+        <button type="button" id="searchAdvBtn" class="btn btn-default"><i class="fa fa-search-plus"></i></button>
+    </div><!-- /input-group -->
+    <div class="toolBtns">
+        <a class="createItemBtn" href="javascript:;"><i class="fa fa-plus-square"></i> <%=lang.t_createItem%></a>
+        <a href="javascript:;" id="toggleTableView"><i class="fa fa-table"></i> Table</a>
+    </div>
+</div><!-- /.row -->
+
+<div id="advSearch"  class="row alert alert-info" hidden>
+    <%= advSearchContentTmp %>
+    <li> <button type="button" id="advSearchBtn" class="btn btn-primary btn-xs"><%=lang.t_search%></button> </li>
+</div>
+
+<div id="dgItems" class="row">
+<%
+_.each(contents.rows, function(item) {
+%>
+    <div class="datagrid dragItem gray" dgid="<%=item.ID%>">
+        <div class="showOne">
+            <div class="viewParam"><i class="fa fa-eye"></i> <span class="vTitle"><%=contents.keyMap[contents.defaultKey].lang%></span>: <span class="vContent"><%=item[contents.defaultKey]%></span> <div class="toolItems"><i class="fa fa-pencil-square-o"></i></div></div>
+         <% if (totalItem > 1) {%>
+            <div class="params">
+                <%
+                var showAllcontent = [];
+                _.each(contents.keyMap, function(map) {
+                showAllcontent.push('<li class="well well-lg"><i class="'+map.class+'" ></i> <b>'+item[map.key]+'</b></li>');
+                %>
+                    <a href="javascript:;" class="datagridParam btn btn-default" data-toggle="tooltip" key="<%=map.key%>" data-original-title="<%=map.lang%>" content="<%=item[map.key]%>"><i class="ibtn <%=map.class%>" ></i> </a>
+                <%
+                })
+                var showAllcontentTmp = showAllcontent.join("");
+                %>
+              </div>
+           <%}%>
+        </div>
+        <div class="showAll" hidden>
+             <%= showAllcontentTmp%>
+        </div>
+    </div>
+<%
+});
+%>
+</div>
+<div class="table-responsive">
+    <table id="dgItemsTable" class="table" hidden>
+        <thead></thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<button page="1" id="loadMore" class="btn btn-default" type="submit" rows="<%=attributes.rows%>" <% if (contents.total <= attributes.rows) { %> hidden <%}%>>More</button>

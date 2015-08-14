@@ -1,0 +1,92 @@
+self.scope.addressData = 
+            {
+                provinces :
+                    [{
+                        lable: '浙江',
+                        cities: [{
+                            lable: '杭州',
+                            counties : [
+                                {
+                                    lable: '西湖区'
+                                },
+                                {
+                                    lable: '拱墅区'
+                                },
+                                {
+                                    lable: '余杭区'
+                                }
+                            ]
+                        },
+                        {
+                            lable: '金华',
+                            counties : [
+                                {
+                                    lable: '1区'
+                                },
+                                {
+                                    lable: '2区'
+                                },
+                                {
+                                    lable: '3区'
+                                }
+                            ]   
+                        }]
+                    },// 浙江省
+                    {
+                        lable: '陕西',
+                        cities: 
+                            [{
+                                lable: '西安',
+                                counties : [
+                                    {
+                                        lable: '雁塔区'
+                                    },
+                                    {
+                                        lable: '咸阳区'
+                                    },
+                                    {
+                                        lable: '高新区'
+                                    }
+                                ]
+                            },
+                            {
+                                lable: '商洛',
+                                counties : [
+                                    {
+                                        lable: '洛南县'
+                                    },
+                                    {
+                                        lable: '丹凤县'
+                                    },
+                                    {
+                                        lable: '商南县'
+                                    }
+                                ]
+                            }]
+                    }]  //陕西省
+            }
+
+
+
+var addressMsg = {};   //需要遍历的数组
+self.scope.addressData = {provinces:[]};    //将要遍历称为的格式
+            var tmpP;
+
+            for(var p in addressMsg){
+                
+                tmpP = {lable: p, cities:[]};
+
+                for (var c in addressMsg[p]){
+                    tmpP.cities.push({
+                        lable: c,
+                        counties: addressMsg[p][c]
+                    })
+                    
+                }
+
+
+
+                self.scope.addressData.provinces.push(tmpP);
+            }   
+
+            console.log(JSON.stringify(self.scope.addressData.provinces));

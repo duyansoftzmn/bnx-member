@@ -1,0 +1,64 @@
+<div class="container">
+    <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a href="../" class="navbar-brand">Aesculapius</a>
+    </div>
+    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown" style="position:relative">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-book"></i> Menu <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+
+
+
+                    <%
+                    _.each(contents, function(navItem) {
+                    var url = _.isNull(navItem.attributes)?"javascript:;":navItem.attributes.url;
+                    var hasChildItem = _.isEmpty(navItem.children)? false : true;
+                    %>
+                    <% if (hasChildItem) {%>
+                    <li class="dropdown-submenu pull-left">
+                        <a tabindex="-1" href="#"> <%= navItem.text %></a>
+                        <ul class="dropdown-menu sub-menu">
+                            <%
+                            _.each(navItem.children, function(subItem) {
+                            var subUrl = _.isNull(subItem.attributes)?"javascript:;":subItem.attributes.url;
+                            %>
+                            <li><a href="<%= subUrl %>"><%= subItem.text %></a></li>
+                            <%})%>
+                        </ul>
+                    </li>
+                    <% }else{ %>
+                    <li><a href="<%= url %>"><%= navItem.text %></a></li>
+                    <%
+                    }
+                    });
+                    %>
+
+                    <li>
+                        <a class="trigger right-caret">Level 1</a>
+                        <ul class="dropdown-menu sub-menu">
+                            <li><a href="#">Level 2</a></li>
+                            <li>
+                                <a class="trigger right-caret">Level 2</a>
+                                <ul class="dropdown-menu sub-menu">
+                                    <li><a href="#">Level 3</a></li>
+                                    <li><a href="#">Level 3</a></li>
+
+                                </ul>
+                            </li>
+                            <li><a href="#">Level 2</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+            <%= rightItemsHtml %>
+        </ul>
+    </nav>
+</div>

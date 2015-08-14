@@ -1,0 +1,113 @@
+{
+	"china":
+	{
+		"name" : "中国",
+		"lv1" :
+		{
+			"name" : "省/直辖市",
+			"city" :
+			{
+			 	"江苏省":
+			 	{
+					"lv2" :
+					{
+						"name" : "市",
+						"city" :
+						{
+							"泰兴市" :
+							{
+								"lv3" :
+								{
+									"name" : "区/镇",
+									"city" :
+									{
+										"主城区" : {"endNode" : true},
+										"黄桥镇" : {"endNode" : true},
+										"分界镇" : {"endNode" : true},
+										"古溪镇" : {"endNode" : true},
+										"元竹镇" : {"endNode" : true},
+										"珊瑚镇" : {"endNode" : true},
+										"广陵镇" : {"endNode" : true},
+										"曲霞镇" : {"endNode" : true},
+										"张桥镇" : {"endNode" : true},
+										"河失镇" : {"endNode" : true},
+										"新街镇" : {"endNode" : true},
+										"姚王镇" : {"endNode" : true},
+										"宣堡镇" : {"endNode" : true},
+										"滨江镇" : {"endNode" : true},
+										"虹桥镇" : {"endNode" : true},
+										"根思乡" : {"endNode" : true}
+									}
+								}
+							},
+							"泰州市" :
+							{
+								"lv3" :
+								{
+									"name" : "区/镇",
+									"city" :
+									{
+										"海陵区" : {"endNode" : true},
+										"高港区" : {"endNode" : true},
+										"九龙镇" : {"endNode" : true},
+										"苏陈镇" : {"endNode" : true},
+										"罡杨镇" : {"endNode" : true},
+										"野徐镇" : {"endNode" : true},
+										"白马镇" : {"endNode" : true},
+										"胡庄镇" : {"endNode" : true},
+										"大泗镇" : {"endNode" : true}
+									}
+								}
+							},
+							"靖江市" :
+							{
+								"lv3" :
+								{
+									"name" : "区/镇",
+									"city" :
+									{
+										"主城区" : {"endNode" : true},
+										"西来镇" : {"endNode" : true},
+										"斜桥镇" : {"endNode" : true},
+										"孤山镇" : {"endNode" : true},
+										"季市镇" : {"endNode" : true},
+										"东兴镇" : {"endNode" : true},
+										"马桥镇" : {"endNode" : true},
+										"新桥镇" : {"endNode" : true},
+										"生祠镇" : {"endNode" : true}
+									}
+								}
+							}
+						}
+					}
+				},
+				"浙江省":
+				{
+					"lv2" :
+					{
+						"name" : "市",
+						"city" :
+						{
+							"杭州市" :
+							{
+								"lv3" :
+								{
+									"name" : "城区",
+									"city" :
+									{
+										"西湖区" : {"endNode" : true},
+										"余杭区" : {"endNode" : true}
+									}
+								}
+							},
+							"金华市" : {
+								"endNode" : true
+							}
+						}
+					}
+				}
+
+			}
+		}
+	}
+}

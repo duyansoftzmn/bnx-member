@@ -1,0 +1,339 @@
+<style>
+    .peUnderline {
+        border-bottom: 1px dotted #8ECFF0;
+    }
+    #peComponents .peComponent{
+        border:1px dashed #8ECFF0;
+        margin-bottom: 5px;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        position: relative;
+    }
+    .peComponent:after{
+        content: '';
+        display: block;
+        clear: both;
+    }
+    .peComponent > *:after{
+        content: '';
+        position: absolute;
+        top:0;
+        left:0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .peSortablePlaceholder{
+        border: 1px solid blue;
+    }
+    #peContent {
+        min-height: 100%;
+    }
+    #peContent > *{
+        padding: 2px;
+        /*background-color: #F3F3F3;*/
+        border: 1px dashed #8ECFF0;
+    }
+    #peContent > *:hover{
+        border: 1px solid #8ECFF0;
+    }
+    .pePanel {
+        position: relative;
+        height: 100%;
+    }
+    .pePanelHeader{
+        position: absolute;
+        top:0;
+        left: 0;
+        width: 100%;
+        padding: 0 20px;
+    }
+    .pePanelBody {
+        height: 100%;
+        padding-top: 50px !important;
+        overflow-x: auto;
+    }
+    .pePanelBody .close{
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+    .peSettingItem{
+        padding: 5px 20px 0 5px;;
+        border: 1px solid #C1E1F0;
+        margin-bottom: 5px;
+        background-color:#F4F8FA ;
+    }
+
+    .peViewContainer {
+        height: 100%;
+        padding: 5px;
+        border: 1px solid #A0AAB3;
+        margin-right: 20px;
+        overflow-y: auto;
+        border-radius: 3px;
+    }
+    .peSelectableHeader {
+    }
+    .peSelectableHeader > span {
+        text-align: center;
+        width:50%;
+        display:inline-block;
+        color:#d3d3d3;
+        transition: color .25s;
+    }
+    .peSelectableHeader > span:hover,
+    .peSelectableHeader > span.active{
+         color:inherit;
+     }
+    #peToolbar .pePanelBody > .container-fluid {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+    }
+</style>
+<div ng-style="{height:'100%',width:'100%'}">
+    <div class="col-sm-8 pePanel">
+        <h3 class="pePanelHeader">View</h3>
+        <div class=" row pePanelBody">
+            <div class="peViewContainer">
+                <form id="peContent" class="form-horizontal container-fluid"></form>
+            </div>
+        </div>
+    </div>
+    <div id="peToolbar" class="col-sm-4 peToolbar pePanel row" ng-style="{paddingBottom:'30px'}">
+        <h3 class="pePanelHeader peSelectableHeader">
+            <span ng-class="{active:!setting.show}" ng-click="setting.show = false">Components</span><span ng-class="{active:setting.show}" ng-click="setting.show = setting.elements!= 0">Settings</span>
+            <div ng-style="{width:'50%',marginLeft:{true:'50%',false:'0'}[setting.show],border:'1px solid #4299D8',transition:'margin .25s'}"></div>
+        </h3>
+        <div class="pePanelBody">
+            <div class="container-fluid" ng-show="!setting.show">
+                <div id="peComponents" class="">
+                    Loding..
+                </div>
+            </div>
+            <div class="container-fluid" ng-show="setting.show">
+                <div class="form-horizontal">
+                    <div ng-repeat="element in  setting.elements">
+                        <div ng-repeat="setting in element.settings track by $index" ng-switch="setting.key" ng-include="'settingsTemplate.html'">
+
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary btn-block" ng-click="saveSetting();" ng-show="showSaveBtn">Save Setting</button>
+                <button type="button" class="btn btn-danger btn-block" ng-click="removeComponent();">Delete Component</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="settingsTemplate.html">
+    <div class="form-group" ng-switch-when="text">
+        <label class="col-sm-3">{{setting.key}}</label>
+        <div class="col-sm-9">
+            <input ng-model="setting.value" class="form-control">
+        </div>
+    </div>
+    <div class="form-group" ng-switch-when="label">
+        <label class="col-sm-3">{{setting.key}}</label>
+        <div class="col-sm-9">
+            <input ng-model="setting.value" class="form-control">
+        </div>
+    </div>
+    <div class="form-group" ng-switch-when="option">
+        <label class="col-sm-3">{{setting.key}}</label>
+        <div class="col-sm-9">
+            <input ng-model="setting.value" class="form-control">
+        </div>
+    </div>
+    <div class="form-group" ng-switch-when="placeholder">
+        <label  class="col-sm-3">{{setting.key}}</label>
+        <div class="col-sm-9">
+            <input ng-model="setting.value" class="form-control">
+        </div>
+    </div>
+    <div class="form-group" ng-switch-when="bindValue">
+        <label  class="col-sm-3">{{setting.key}}</label>
+        <div class="col-sm-9">
+            <div class="input-group">
+                <select ng-model="setting.value" ng-options="option as option for option in config.data.variables.space | orderBy : 'toString()' : setting.sort"  class="form-control">
+                    <option value=""> - No -</option>
+                </select>
+                <div class="input-group-btn">
+                    <a class="btn  btn-default icon-transfer" ng-init="setting.sort=false;" ng-click="setting.sort=!setting.sort"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div  class="form-group" ng-switch-when="initValue">
+        <label  class="col-sm-3">{{setting.key}}</label>
+        <div class="col-sm-9">
+            <select ng-model="setting.value.type" ng-change="setting.value.variable = ''" ng-options=" option as option for option in util.getKeyList(config.data.variables);"  class="form-control">
+                <option value="">- No -</option>
+            </select>
+            <select ng-model="setting.value.variable"  ng-options="option as option for option in config.data.variables[setting.value.type]"  class="form-control">
+                <option value="">- No -</option>
+            </select>
+        </div>
+    </div>
+    <div ng-switch-when="table">
+        <div  ng-repeat="column in setting.value" ng-class="{'peUnderline':!$last}">
+            <a class="btn btn-default btn-xs icon-close pull-right" ng-click="setting.value.splice($index, 1)"></a>
+            <h4>Column</h4>
+            <div class="form-group form-group-sm">
+                <label class="col-sm-3">
+                    Header
+                </label>
+                <div class="col-sm-9">
+                    <input class="form-control" ng-model="column.header">
+                </div>
+            </div>
+            <div  class="form-group form-group-sm">
+                <label  class="col-sm-3">
+                    Type
+                </label>
+                <div class="col-sm-9">
+                    <select class="form-control" ng-model="column.type" ng-options="type as type for type in ['Input','Select','Text','Expression']">
+                        <option value="">- No -</option>
+                    </select>
+                </div>
+            </div>
+            <div  class="form-group  form-group-sm" ng-if="column.type != 'Expression'">
+                <label  class="col-sm-3">
+                    Variable
+                </label>
+                <div class="col-sm-9">
+                    <div class="input-group">
+                        <select ng-model="column.variable" ng-options="option as option for option in config.data.variables.space | orderBy : 'toString()' : setting.sort"  class="form-control">
+                            <option value=""> - No -</option>
+                        </select>
+                        <div class="input-group-btn">
+                            <a class="btn  btn-default icon-transfer" ng-init="setting.sort=false;" ng-click="setting.sort=!setting.sort"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group  form-group-sm" ng-if="column.type && column.type != 'Text'">
+                <label  class="col-sm-3">
+                    {{tableSettingDataName[column.type]}}
+                </label>
+                <div class="col-sm-9">
+                    <input class="form-control" ng-model="column.data" ng-if="column.type != 'Select'">
+                    <div class="input-group"  ng-if="column.type == 'Select'">
+                        <select class="form-control" ng-model="column.data" ng-options="item as item for item in config.data.variables.space | orderBy : 'toString()' : setting.sort">
+                            <option value="">- No -</option>
+                        </select>
+                        <div class="input-group-btn">
+                            <a class="btn  btn-default icon-transfer" ng-init="setting.sort=false;" ng-click="setting.sort=!setting.sort"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="btn btn-default icon-add" ng-click="setting.value.push({header:'Header',type:'Input',variable:'',data:'default'})"></a>
+    </div>
+    <div ng-switch-when="button">
+        <div  ng-repeat="btn in setting.value" class="peSettingItem">
+            <a class="btn btn-default btn-xs icon-close pull-right" ng-click="setting.value.splice($index, 1)"></a>
+            <h4>Button</h4>
+            <div class="form-group">
+                <label  class="col-sm-3">Show</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" ng-model="btn.show">
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-3">Click</label>
+                <div class="col-sm-9">
+                    <textarea type="text" class="form-control" ng-model="btn.click"></textarea>
+                </div>
+            </div>
+        </div>
+        <a class="btn btn-default icon-add" ng-click="setting.value.push({show:'Button',click:''})"></a>
+    </div>
+    <div ng-switch-when="richText" ng-init="onSettingInit(setting)">
+        <div id="peRichTextEditor">
+        </div>
+    </div>
+    <div ng-switch-when="feedback">
+        <div class="form-group">
+            <label  class="col-sm-3">Bind</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <select ng-model="setting.value.variable" ng-options="option as option for option in config.data.variables.space | orderBy : 'toString()' : setting.sort"  class="form-control">
+                        <option value=""> - No -</option>
+                    </select>
+                    <div class="input-group-btn">
+                        <a class="btn  btn-default icon-transfer" ng-init="setting.sort=false;" ng-click="setting.sort=!setting.sort"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label  class="col-sm-3">Full Mark</label>
+            <div class="col-sm-9">
+                <input type="number" class="form-control" ng-model="setting.value.fullMark" min="5" max="100" step="5">
+            </div>
+        </div>
+    </div>
+    <div class="form-group" ng-switch-when="required">
+        <label class="col-sm-3">{{setting.key}}</label>
+        <div class="col-sm-9">
+            <label>
+                <input type="checkbox" autocomplete="off" ng-model="setting.value">&nbsp;&nbsp;Yes&nbsp;&nbsp;
+            </label>
+        </div>
+    </div>
+    <div class="form-group" ng-switch-when="disabled">
+        <label class="col-sm-3">{{setting.key}}</label>
+        <div class="col-sm-9">
+            <label>
+                <input type="checkbox" autocomplete="off" ng-model="setting.value">&nbsp;&nbsp;Yes&nbsp;&nbsp;
+            </label>
+        </div>
+    </div>
+    <div class="form-group" ng-switch-when="readonly">
+        <label class="col-sm-3">{{setting.key}}</label>
+        <div class="col-sm-9">
+            <label>
+                <input type="checkbox" autocomplete="off" ng-model="setting.value">&nbsp;&nbsp;Yes&nbsp;&nbsp;
+            </label>
+        </div>
+    </div>
+
+    <div ng-switch-when="row">
+        <div class="form-group" ng-repeat="header in setting.value.head track by $index">
+            <label class="col-sm-3">Head {{$index}}</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" ng-model="setting.value.head[$index]">
+            </div>
+        </div>
+        <div class="form-group" ng-repeat="column in setting.value.body track by $index">
+            <label class="col-sm-3">Column {{$index + 1}}</label>
+            <div class="col-sm-9">
+                <div class="input-group">
+                    <select ng-model="setting.value.body[$index]" ng-options="option as option for option in config.data.variables.space | orderBy : 'toString()' : setting.sort"  class="form-control">
+                        <option value=""> - No -</option>
+                    </select>
+                    <div class="input-group-btn">
+                        <a class="btn  btn-default icon-transfer" ng-init="setting.sort=false;" ng-click="setting.sort=!setting.sort"></a>
+                    </div>
+                </div>
+                <a class="btn btn-default btn-block" ng-if="$last" ng-click="setting.value.body.push('');setting.value.head.push('')">Add Column</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group" ng-switch-when="readDT">
+        <label  class="col-sm-3">Data Template</label>
+        <div class="col-sm-9">
+            <div class="input-group">
+                <select ng-model="setting.value" ng-options="option.dataTemplateId as option.name for option in config.data.dataTemplates | orderBy : 'toString()' : setting.sort"  class="form-control">
+                    <option value=""> - No -</option>
+                </select>
+                <div class="input-group-btn">
+                    <a class="btn  btn-default icon-transfer" ng-init="setting.sort=false;" ng-click="setting.sort=!setting.sort"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

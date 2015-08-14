@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Form Preview</title>
+	<link rel="stylesheet" href="/WebUI/bases/syArt/bootstrap/css/bootstrap.min.css">
+</head>
+<body ng-app ng-controller="previewCtrl">
+	<style>
+	<%=form.website.css%> 
+	@media print{.btn{display:none;}}
+</style>
+	<div class="dyFormMaker">
+		<table class="table table-bordered table-hover"> <%=form.website.html%> </table>
+	</div>
+	<button type="button" style="position:fixed;left:10px;top:10px;" class="btn btn-success" ng-click="switchOutput();">switch preview</button>
+	<script>
+	function previewCtrl($scope){
+		var data = <%=form.variables%>;
+		for (var key in data){
+			$scope[key] = data[key];
+		}
+
+		$scope.inShow='form';
+
+
+		$scope.switchOutput=function(){
+			if( $scope.inShow=='form'){
+				$scope.previewResult();
+			}else{
+				$scope.previewForm();
+			}
+		};
+		$scope.previewForm=function(){
+			if($scope.inShow=='result'){
+				$('input').each(function(){
+					$(this).css('display','inline-block');
+				});
+
+				$('select').each(function(){
+					$(this).css('display','inline-block');
+				});
+
+				$('textarea').each(function(){
+					$(this).after('<p class="resultPreview">'+$(this).find('option:selected').text()+'</p>');
+
+					$(this).css('display','block');
+				});
+
+				$('.resultPreview').each(function(){
+					$(this).remove();
+				});
+
+				$scope.inShow='form';
+			};
+		};
+
+		$scope.previewResult=function(){
+			if($scope.inShow=='form'){
+				$('input').each(function(){
+					$(this).after('<span class="resultPreview">'+$(this).val()+'</span>');
+					$(this).css('display','none');
+				});
+
+				$('select').each(function(){
+					$(this).after('<span class="resultPreview">'+$(this).find('option:selected').text()+'</span>');
+
+					$(this).css('display','none');
+				});
+
+				$('textarea').each(function(){
+					$(this).after('<p class="resultPreview">'+$(this).val()+'</p>');
+					$(this).css('display','none');
+				});
+				$scope.inShow='result';
+			}
+
+		}//previewResult
+	}
+
+
+	</script>
+	<script src="/WebUI/bases/jslibs/angular/angular.min.js"></script>
+	<script src="/WebUI/bases/jslibs/jquery-1.9.0.min.js"></script>
+	<script src="/WebUI/bases/syArt/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

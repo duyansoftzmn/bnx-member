@@ -1,0 +1,42 @@
+<div id="navContainer" class="container">
+    <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <img src="/Admin/Dashboard/Image" onerror="this.src='/Content/images/logo.png'" alt="">
+    </div>
+    <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+        <ul class="nav navbar-nav">
+            <%
+            _.each(contents, function(navItem) {
+                var url = _.isNull(navItem.attributes)?"javascript:;":navItem.attributes.url;
+                var hasChildItem = _.isEmpty(navItem.children)? false : true;
+            %>
+            <% if (hasChildItem) {%>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <%= navItem.text %> <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <%
+                    _.each(navItem.children, function(subItem) {
+                        var subUrl = _.isNull(subItem.attributes)?"javascript:;":subItem.attributes.url;
+                    %>
+                        <li><a href="<%= subUrl %>"><%= subItem.text %></a></li>
+                    <%})%>
+                </ul>
+            </li>
+            <% }else{ %>
+                <li><a href="<%= url %>"><%= navItem.text %></a></li>
+            <%
+                }
+             });
+            %>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <%= rightItemsHtml %>
+        </ul>
+    </nav>
+</div>
+<div class="headTab"><div id="toggleNavBarBtn" class="navTab">Aesc <i class="fa fa-chevron-up"></i></div></div>

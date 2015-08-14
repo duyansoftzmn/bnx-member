@@ -1,0 +1,13 @@
+{
+  "name": "graphlib",
+  "_cacheHeaders": {
+    "Last-Modified": "Fri, 07 Mar 2014 03:50:11 GMT",
+    "Content-Length": "54451",
+    "Content-Type": "application/x-javascript"
+  },
+  "_release": "*",
+  "main": "index.js",
+  "_source": "http://cpettitt.github.io/project/graphlib/latest/graphlib.js",
+  "_target": "*",
+  "_originalSource": "http://cpettitt.github.io/project/graphlib/latest/graphlib.js"
+}

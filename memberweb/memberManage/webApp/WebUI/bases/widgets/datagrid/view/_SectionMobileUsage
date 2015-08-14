@@ -1,0 +1,131 @@
+define([
+    "PROD_DIR/controller/PageCtrl",
+    "jquery",
+    "SY_WIDGET/datagrid/Datagrid",
+    "jquery.ui"
+], function(Page, $, Datagrid){
+
+    var PasswordRulesPage = Page.extend({
+        init : function(){
+            var _handleAjaxUpdateEvent = function(index, model, value){
+                var param =  model.contents.rows[index];
+                param.ParameterValue = value;
+
+                $.post(saveUrl, param, function(data){
+                    //TODO do something, should handle unseccessful
+                });
+            }
+
+            var PRTableDatagrid =  Datagrid.extend({
+                rebuildData : function(json){
+                    json.param = {
+                        "NAME" : {
+                            key : "NAME",
+                            type : "string",
+                            limitLen : 0,
+                            title : t_passwordRulestitle
+                        },
+                        "EXPIRATIONDAYS" : {
+                            "key" : "EXPIRATIONDAYS",
+                            type : "string",
+                            limitLen : 4,
+                            title : t_expiraionDays
+                        },
+                        "MAXLENGTH" : {
+                            "key" : "MAXLENGTH",
+                            type : "string",
+                            limitLen :4,
+                            title: t_maxLength
+                        },
+                        "MAXLOGINATTEMPTS" : {
+                            key : "MAXLOGINATTEMPTS",
+                            type : "string",
+                            limitLen : 4,
+                            title : t_maxLoginAttempts
+                        },
+                        "MINLENGTH" : {
+                            key : "MINLENGTH",
+                            type : "string",
+                            limitLen : 4,
+                            title : t_minLength
+                        },
+                        "NEEDNUMERIC" : {
+                            key : "NEEDNUMERIC",
+                            type : "bool",
+                            valueMap : {
+                                "YES" : "Y",
+                                "NO" : "N"
+                            },
+                            title : t_atLeastOneNumeric
+                        },
+                        "NEEDSPECIALCHAR" : {
+                            key : "NEEDSPECIALCHAR",
+                            type : "bool",
+                            valueMap : {
+                                "YES" : "Y",
+                                "NO" : "N"
+                            },
+                            title : t_atLeastOneNonalphanumeric
+                        },
+                        "NEEDUPPER" : {
+                            key : "NEEDUPPER",
+                            type : "bool",
+                            valueMap : {
+                                "YES" : "Y",
+                                "NO" : "N"
+                            },
+                            title : t_atLeastOneUppercase
+                        },
+                        "PRIORITY" : {
+                            key : "PRIORITY",
+                            type : "string",
+                            limitLen : 4,
+                            title : t_priority
+                        },
+                        "REUSEDLIMITED" : {
+                            key : "REUSEDLIMITED",
+                            type : "string",
+                            limitLen : 4,
+                            title : t_notReusedCount
+                        }
+                    };
+                    return json;
+                }
+            });
+
+            var datagrid = new PRTableDatagrid({
+                'viewFileName' : 'SectionMobileTable',
+                'parentSelector' : "#sectionMobileTable",
+                'templateSelector' : "",
+                'attributes' : {
+                    "dataSourceUrl" : "/Admin/PasswordRules/List",
+                    "titleParam" : "NAME",
+                    "ajaxHandler" : {
+                        bool : function(index, model, value){
+                            _handleAjaxUpdateEvent(index, model, value);
+                        },
+                        string : function(index, model, value){
+                            _handleAjaxUpdateEvent(index, model, value);
+                        }
+                    }
+                },
+                'lang' : {
+                    t_title  : t_passwordRulestitle
+                }
+            });
+
+            console.log(datagrid);
+            datagrid.buildHtmlByAjaxJson (datagrid.attributes.dataSourceUrl, {
+                "order" : "desc",
+                "sort" : "ID"
+            }, function(){
+                  //console.log(do somtion)
+            });
+        }
+    });
+
+    var prPage = new PasswordRulesPage();
+    return {
+        init : prPage.init()
+    }
+});

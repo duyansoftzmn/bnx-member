@@ -1,0 +1,50 @@
+<div class="centerDiv">
+    <h3><%= lang.t_title%></h3>
+    <fieldset role="form">
+<%
+    var i = 0;
+    _.each( contents.rows,function(param){
+        var paramLimiter =  contents.param[param[attributes.ParamName]];
+%>
+        <div class="mtable form-group" >
+            <label class="col-md-6 control-label"> <%=param[attributes.Description]%></label>
+<%
+            switch(paramLimiter.type)
+            {
+            case 'bool':  %>
+                <fieldset class="ui-switch">
+                    <input key="<%=paramLimiter.key%>" index="<%= i%>" type="checkbox" value="<%=param[attributes.ParamValue]%>"/>
+                </fieldset>
+                <% break;
+            case 'string' :
+                %>
+                <fieldset class="inputTextArea">
+                    <input type="text" <% if(paramLimiter.limitLen < 10){%> size="<%=paramLimiter.limitLen%>" class="inputText"<%}else {%>class="inputText w30p"<%}%> disabled="disabled" value="<%=param[attributes.ParamValue]%>"/>
+                    <i hidden class="fa fa-pencil-square edit"></i>
+                    <i hidden key="<%=paramLimiter.key%>" index="<%= i%>" class="fa fa-check-circle change update"></i>
+                    <i hidden class="fa fa-times-circle change roleback"></i>
+                </fieldset>
+                <% break;
+            case 'email' :  %>
+                <fieldset class="inputTextArea">
+                    <input key="<%=paramLimiter.key%>" index="<%= i%>" type="text" class="inputText w30p" disabled="disabled" value="<%=param[attributes.ParamValue]%>"/>
+                    <i hidden class="fa fa-pencil-square edit"></i>
+                    <i hidden class="fa fa-check-circle change update"></i>
+                    <i hidden class="fa fa-times-circle change roleback"></i>
+                </fieldset>
+                <% break;
+            case 'slider' :  %>
+                <fieldset class="sliderArea">
+                    <input key="<%=paramLimiter.key%>" index="<%= i%>" for="<%=paramLimiter.key%>" backupValue="<%=param[attributes.ParamValue]%>" type="text" class="inputSliderText" value="<%=param[attributes.ParamValue]%>"/>
+                    <div id="<%=paramLimiter.key%>" class="slider"></div>
+                </fieldset>
+                <% break;
+            }
+%>
+        </div>
+<%
+        i++;
+})
+%>
+    </fieldset>
+</div>

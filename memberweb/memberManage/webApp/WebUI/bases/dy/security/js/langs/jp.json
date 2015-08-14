@@ -1,0 +1,12 @@
+{
+  "lang": "jp",
+  "content": {
+    "t_changePassword":"Change Password",
+    "t_mobile":"Mobile",
+    "t_getVerifyCode":"Get Verify Code",
+    "t_verifyCode":"Verify Code",
+    "t_check":"Check",
+    "t_newPassword":"New Password",
+    "t_change":"Change"
+  }
+}

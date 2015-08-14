@@ -1,0 +1,16 @@
+<% if (!!param.hasInputText){%>
+	<input id="<%=param.textId%>" placeholder="<%=param.placeholder%>" disabled="disabled">
+<%}%>
+<div class="btn <%=param.btnClass%>">
+	<%if (!param.text){%>
+	<span>Browse</span>
+	<%}else{%>
+	<span><%=param.text%></span>
+	<%}%>
+	<input
+    <% if (!!param.hasInputText){%>for="<%=param.textId%>"<%}%>
+    <% if (!!param.isMultiple){%>multiple<%}%>
+    <% if (!!param.maxSize){%>maxsize="<%=param.maxSize%>"<%}%>
+    type="file"
+    class="syUpload" accept="<%=param.accept%>" name="<%=param.fileId%>" id="<%=param.fileId%>"/>
+</div> 

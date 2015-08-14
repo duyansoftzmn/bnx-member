@@ -1,0 +1,56 @@
+<div class="listSelector centerDiv">
+    <div class="toolBar">
+        <button type="button" todo="add" class="btn btn-primary btn-xs"><%=lang.t_add%></button>
+        <button type="button" todo="addAll" class="btn btn-primary btn-xs"><%=lang.t_addAll%></button>
+        <button type="button" todo="remove" class="btn btn-info btn-xs removeBtn"><%=lang.t_remove%></button>
+        <button type="button" todo="removeAll" class="btn btn-info btn-xs removeAllBtn"><%=lang.t_removeAll%></button>
+    </div>
+    <div class="body row">
+           <div class="col-xs-6">
+              <div class="left">
+                  <div class="searchoBar input-group input-group-lg">
+                      <span class="input-group-addon" key="<%=attributes.filter%>"><%=attributes.keyMap[attributes.filter].lang%></span>
+                          <input type="text" class="filter form-control" for="left" placeholder="Search">
+                  </div>
+
+                  <div class="toolBar">
+                      <div class="checkbox">
+                          <label>
+                              <input class="selectAllBtn" for="left" type="checkbox"/> Select All
+                          </label>
+                      </div>
+                  </div>
+
+                  <ol class="list" class="selectable">
+                      <%var i = 0;%>
+                      <%_.each(contents.rows, function(item){%>
+                      <li index="<%=i%>"  itemid="" >
+                          <%_.each(attributes.keyMap, function(map){%>
+                          <% if (!_.isEmpty(map.class)){%><i class="<%=map.class%>"></i><%}%>
+                          <%=item[map.key] %>
+                          <%})%>
+                          <div hidden="" class="status"><i class="fa fa-check"></i></div>
+                      </li>
+                      <% i++;%>
+                      <%})%>
+                  </ol>
+              </div>
+           </div>
+        <div class="col-xs-6">
+            <div class="right">
+                <div class="searchoBar input-group input-group-lg">
+                    <span class="input-group-addon" key="<%=attributes.filter%>"><%=attributes.keyMap[attributes.filter].lang%></span>
+                    <input type="text" for="right" class="filter form-control" placeholder="Search">
+                </div>
+                <div class="toolBar">
+                    <div class="checkbox">
+                        <label>
+                            <input class="selectAllBtn" for="right" type="checkbox"/> Select All
+                        </label>
+                    </div>
+                </div>
+                <ol class="list"></ol>
+            </div>
+        </div>
+    </div>
+</div>

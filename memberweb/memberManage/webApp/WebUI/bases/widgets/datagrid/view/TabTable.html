@@ -1,0 +1,33 @@
+<%if (!contents.isDisableTab){%>
+<div id="tabTableBox-<%=contents.id%>" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+       <%
+       var tabBody = [];
+       var i = 1;
+       var tabIndex = 0;
+       _.each(attributes, function(tab){
+
+            tabBody.push('<div id="tabs-'+i+'-'+contents.id+'"></div>');
+       %>
+            <li class="tabTitle" tabid="<%= i-1%>">
+                <a href="#tabs-<%=i%>-<%=contents.id%>"><%= tab.tabName%></a>
+            </li>
+       <%
+            tabIndex = -1;
+            i++;
+        });
+        var tabBodyHtml =  tabBody.join('');
+        %>
+    </ul>
+    <%= tabBodyHtml %>
+</div>
+<%
+    } else {
+    var i = 1;
+    _.each(attributes, function(tab){
+%>
+    <div id="tabs-<%=i%>-<%=contents.id%>"></div>
+<%
+         i++;
+        });
+}%>

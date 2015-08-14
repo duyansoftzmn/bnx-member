@@ -1,0 +1,58 @@
+<div class="row  toolbar"> <a href="javascript:;"><i class="fa fa-plus-square"></i> <%=lang.t_createItem%></a></div>
+<h2><%=lang.t_title%></h2>
+<div class="sectionMobileTable">
+   <%_.each(contents.rows, function(section){
+
+    %>
+     <h3><%= section[attributes.titleParam] %></h3>
+
+    <div role="form">
+        <%
+            _.each(contents.param, function(param){
+            var i = 0;
+            var itemValue =  section[param.key];
+        %>
+            <div class="mtable form-group" >
+                <label class="col-md-6 control-label"> <%=param.title%></label>
+                <%
+                switch(param.type)
+                {
+                case 'bool':  %>
+                <fieldset class="ui-switch">
+                    <input key="<%=param.key%>" index="<%= i%>" type="checkbox" value="<%=itemValue%>"/>
+                </fieldset>
+                <% break;
+                case 'string' :
+                %>
+                <fieldset class="inputTextArea">
+                    <input type="text" <% if(param.limitLen > 0 && param.limitLen < 10){%> size="<%=param.limitLen%>" class="inputText"<%}else {%>class="inputText w30p"<%}%> disabled="disabled" value="<%=itemValue%>"/>
+                    <i hidden class="fa fa-pencil-square edit"></i>
+                    <i hidden key="<%=param.key%>" index="<%= i%>" class="fa fa-check-circle change update"></i>
+                    <i hidden class="fa fa-times-circle change roleback"></i>
+                </fieldset>
+                <% break;
+                case 'email' :  %>
+                <fieldset class="inputTextArea">
+                    <input  key="<%=param.key%>" index="<%= i%>" type="text" class="inputText w30p" disabled="disabled" value="<%=itemValue%>"/>
+                    <i hidden class="fa fa-pencil-square edit"></i>
+                    <i hidden class="fa fa-check-circle change update"></i>
+                    <i hidden class="fa fa-times-circle change roleback"></i>
+                </fieldset>
+                <% break;
+                case 'slider' :  %>
+                <fieldset class="sliderArea">
+                    <input key="<%=param.key%>" index="<%= i%>" for="<%=param.key%>" backupValue="<%=itemValue%>" type="text" class="inputSliderText" value="<%=itemValue%>"/>
+                    <div id="<%=param.key%>" class="slider"></div>
+                </fieldset>
+                <% break;
+                }
+                %>
+            </div>
+            <%
+            i++;
+            })
+            %>
+
+    </div>
+   <% }) %>
+</div>

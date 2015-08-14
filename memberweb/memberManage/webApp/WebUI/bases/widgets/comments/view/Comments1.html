@@ -1,0 +1,68 @@
+<%if(attributes.todo != "addmore"){%>
+<div class="comments1" <%if (contents.totalNumberOfElements == 0){%>hidden<%}%>>
+	<div class="node"></div>
+<%}%>	
+	
+	<%var isOdd = true%>
+	<%_.each(contents.thisPageElements, function(commentObj){%>
+	<li>
+	<%
+		var dateStr = dateFormat("MM/dd/yyyy hh:mm:ss", commentObj.date);
+		var commentsLen = commentObj.comments.length;
+	%>
+		<%=dateStr%>
+		<div class="popover <% if (isOdd){%>right<%}else{%>left<%}%>">
+			 <div class="arrow"></div>
+			 <table>
+			 	<tr>
+			 		<% if (isOdd){%>
+			 		<td width="54"><img src="<%=commentObj.userIcon%>" height="54" width="54"/></td>
+			 		<td width="100%">
+			 			<h3><%=commentObj.userName%></h3>
+        				<div class="content">
+      					<%
+      						if(commentsLen > 129){
+      							var showStr = commentObj.comments.substring(0,120);
+      					
+      					%>
+      						<%=showStr%> <span title="<%=commentObj.comments%>" class="comments1More">... More</span>
+      					<%}else{%>
+      						<%=commentObj.comments%>
+
+      					<%}%>
+        				</div>	
+        			</td>
+        			<%}else{%>
+        			<td width="100%">
+			 			<h3><%=commentObj.userName%></h3>
+        				<div class="content">
+          				<%
+	  						if(commentsLen > 129){
+	  							var showStr = commentObj.comments.substring(0,120);
+      					
+      					%>
+      						<%=showStr%> <span title="<%=commentObj.comments%>" class="comments1More">... More</span>
+      					<%}else{%>
+      						<%=commentObj.comments%>
+
+      					<%}%>
+        				</div>	
+        			</td>	
+        			<td width="54"><img src="<%=commentObj.userIcon%>" height="54" width="54"/></td>
+        			<%}%>
+			 	</tr>
+			 </table>
+		</div>
+	</li>
+	<% isOdd = !isOdd;%>
+	<%})%>
+	
+<%if(attributes.todo != "addmore"){%></div><%}%>
+
+<%
+var currentComment = (contents.pageNumber + 1) * contents.pageSize;
+if (contents.totalNumberOfElements != 0 && contents.totalNumberOfElements >  currentComment -1){%>
+<div class="comments1LoadMore btn" pageNumber="<%=contents.pageNumber%>" pageSize="<%=contents.pageSize%>">
+	Load More
+</div>
+<%}%>

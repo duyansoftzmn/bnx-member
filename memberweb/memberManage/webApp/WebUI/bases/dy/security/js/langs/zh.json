@@ -1,0 +1,12 @@
+{
+  "lang": "zh",
+  "content": {
+    "t_changePassword":"修改密码",
+    "t_mobile":"手机",
+    "t_getVerifyCode":"获取验证码",
+    "t_verifyCode":"验证码",
+    "t_check":"验证",
+    "t_newPassword":"新密码",
+    "t_change":"修改"
+  }
+}

@@ -1,0 +1,66 @@
+<form ng-controller="Ng.FormDesignerCtrl" name="formMakerForm" class="formMaker" ng-style="{height:'100%',width:'100%',position:'relative'}">
+      <ul id="editorTab" class="nav nav-tabs">
+        <li class="active"><a href="#ATTR" data-toggle="tab">Attributes</a></li>
+        <li><a href="#HTML" data-toggle="tab"> HTML </a></li>
+        <li><a href="#CSS" data-toggle="tab"> CSS </a></li>
+        <li><a href="#VAR" data-toggle="tab">Usable Variable</a></li>
+      </ul>
+      <div id="myTabContent" class="tab-content" ng-style="{height:'100%',marginTop:'-42px',paddingTop:'42px'}">
+          <div class="tab-pane fade in active" id="ATTR">
+              <div class="codeEditor">
+                <div class="form-group">
+                    <label for="formName">Name:</label>
+                    <input tyep="text" id="formName" ng-model="form.name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="formDesc">Description:</label>
+                    <input tyep="text" id="formDesc" ng-model="form.description" class="form-control"/>
+                </div>
+            </div>
+          </div>
+          <div class="tab-pane fade in" id="HTML">
+              <!--<div class="codeEditor">-->
+                  <!--<textarea  id="wshtmlArea" ng-model="form.website.html"></textarea>-->
+              <!--</div>-->
+              <div config="pageEditorConfig" sy-page-editor ng-if="runPageEditor"></div>
+          </div>
+          <div class="tab-pane fade" id="CSS">
+              <div class="codeEditor">
+                  <textarea ng-model="formTmp.css" placeholder="CSS" ng-disabled="currentFormType != 'website'"></textarea>
+              </div>
+            </div>
+          <div class="tab-pane fade" id="VAR">
+              <div class="codeEditor">
+                  <label><input class="space" name="space" type="checkbox" ng-click="pickAll('space')">Space</label>
+                  <a class="btn btn-default btn-xs icon-transfer" ng-init="spaceOrder = false;" ng-click="spaceOrder = !spaceOrder"></a>
+                  <ul class="list-inline">
+                      <li ng-repeat="item in variables.space | orderBy : 'toString()': spaceOrder">
+                          <label><input name="space" type="checkbox" ng-model="variablesStatus.space[item]" ng-change="updataVariables('space')"> {{item}}</label>
+                      </li>
+                  </ul>
+                  <label><input class="customer" name="space" type="checkbox" ng-click="pickAll('customer')">Customer</label>
+                  <ul class="list-inline">
+                      <li ng-repeat="item in variables.customer">
+                          <label><input type="checkbox" ng-model="variablesStatus.customer[item]" ng-change="updataVariables('customer')"> {{item}}</label>
+                      </li>
+                  </ul>
+                  <label><input class="employee" name="space" type="checkbox" ng-click="pickAll('employee')">Employee</label>
+                  <ul class="list-inline">
+                      <li ng-repeat="item in variables.employee">
+                          <label><input type="checkbox" ng-model="variablesStatus.employee[item]" ng-change="updataVariables('employee')"> {{item}}</label>
+                      </li>
+                  </ul>
+                  <label><input class="organization" name="space" type="checkbox" ng-click="pickAll('organization')">Organization</label>
+                  <ul class="list-inline">
+                      <li ng-repeat="item in variables.organization">
+                          <label><input type="checkbox" ng-model="variablesStatus.organization[item]" ng-change="updataVariables('organization')"> {{item}}</label>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+      <div ng-style="{position:'absolute',bottom:0,right:0}">
+        <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#preview" ng-click="previewForm();">Preview</button>-->
+        <button type="button" class="btn btn-success" ng-click="save();" ng-disabled="formMakerForm.$invalid">Save</button>
+      </div>
+    </form>

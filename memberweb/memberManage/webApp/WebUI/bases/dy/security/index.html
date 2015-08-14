@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title></title>
+    <link rel="stylesheet" href="/WebUI/bases/syArt/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/WebUI/bases/dy/security/css/style.css">
+</head>
+<body ng-controller="Ng.securityCtrl">
+    <div ng-include="'views/include/navbar.html'"></div>
+    <div id="findPassword">
+        <h1 ng-bind="syi18n.t_changePassword">Change Password</h1>
+        <form name="findPasswordForm">
+            <div class="form-group">
+                <label ng-bind="syi18n.t_mobile">Mobile</label>
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="" ng-model="phoneNumber" ng-pattern="/^[0-9]{11}$/">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button" ng-click="getVerifyCode()" ng-disabled="verifyDisabled||!isAccountPhone()"><span ng-bind="syi18n.t_getVerifyCode">Get Verify Code</span><span id="verifyCountDown"></span></button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label ng-bind="syi18n.t_verifyCode">Verify Code</label>
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="" ng-model="verifyCode">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" type="button" ng-disabled="!verifyCode" ng-click="checkVerifyCode()" ng-bind="syi18n.t_check">Check</button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label ng-bind="syi18n.t_newPassword">New Password</label>
+                <div class="input-group">
+                    <input class="form-control newPwd" type="password" placeholder="" ng-model="password" disabled>
+                    <span class="input-group-btn">
+                      <button class="btn btn-default newPwd" type="button" ng-click="resetPassword()" ng-bind="syi18n.t_change" disabled>Change</button>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+<script id="syMainJs" data-main="/WebUI/bases/sy" src="/WebUI/bases/jslibs/require-2.1.4.min.js"  prod-path="/WebUI/bases/dy/security"  main-ctrl="app"></script>
+</html>

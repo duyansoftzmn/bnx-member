@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<title>会员管理系统</title>
+  	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  	<link rel="stylesheet" href="app/lib/bootstrap-3.3.4-dist/css/bootstrap.min.css">
+  	<link rel="stylesheet" href="app/css/main.css">
+  	<link rel="stylesheet" href="/WebUI/bases/bSplugin/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+  	<link rel="shortcut icon" href="app/img/favicon.png" type="image/png" />
+  </head>
+
+  <body ng-controller="Ng.srAdmin">
+  	<div id="browserSupportInfo" style="display:none">
+  		<div class="modal-dialog" style="width:90%; text-align: center;" >
+  			<div class="modal-body" >
+  				<p style="text-align: center;color: #E8E8E8;font-size: 20px;">十分抱歉，我们不支持您使用的浏览器。 建议使用更加快速安全的浏览器</p>
+  				<div class="row">
+				  <div class="col-sm-5 col-md-5">
+				    <div class="thumbnail">
+				      <img src="/WebUI/bases/img/chrome.jpg">
+				      <div class="caption">
+				        <h3>谷歌浏览器</h3>
+				        <p><a href="http://rj.baidu.com/soft/detail/14744.html?ald"  target="_blank" class="btn btn-primary" role="button">下载</a></p>
+				      </div>
+				    </div>
+				  </div>
+
+				  <div class="col-sm-5 col-md-5">
+				    <div class="thumbnail">
+				      <img src="/WebUI/bases/img/firefox.jpg">
+				      <div class="caption">
+				        <h3>火狐浏览器</h3>
+				        <p><a href="http://www.firefox.com.cn/"  target="_blank" class="btn btn-primary" role="button">下载</a></p>
+				      </div>
+				    </div>
+				  </div>
+
+				</div>
+
+  			</div>
+  		</div>
+  	</div>
+
+	<div id="loginPanel" ng-show="!logined">
+		<div class="modal-dialog" id="loadingLayout" ng-if="isloading">
+			<div class="modal-body" style="text-align: center;color: #E8E8E8;font-size: 24px;">
+				<p>会员管理系统</p>
+			</div>
+		</div>
+		<div class="modal-dialog" id="loginStorePanel" style="display:none" ng-show="signType=='login'"> 
+		    <div class="modal-content">
+		      <div class="modal-header">
+		      	<button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="signType = 'resetPwd'"><span aria-hidden="true">修改登录密码</span></button>
+		        <h4 class="modal-title">系统登录</h4>
+		      </div>
+		      <div class="modal-body">
+		        <form class="form-horizontal">
+		        	<div class="form-group">
+				    	<label class="col-sm-2 control-label">用户名</label>
+				    	<div class="col-sm-10">
+				      		<input type="tel" class="form-control" ng-keyup="inputNumOnly($event)" ng-model="loginObj.mobile" placeholder="用户名">
+				    	</div>
+				    </div>
+
+				  <div class="form-group">
+				    <label class="col-sm-2 control-label">密码</label>
+				    <div class="col-sm-10">
+				      <input type="password" class="form-control" ng-model="loginObj.password" placeholder="密码">
+				    </div>
+				  </div>
+				</form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-primary btn-block" ng-click="loginStore(loginObj, $event)">登录</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+
+	<div class="modal-dialog" id="signInPanel" style="display:none" ng-show="signType=='resetPwd'">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="signType = 'login'"><span aria-hidden="true">系统登录</span></button>
+	        <h4 class="modal-title">修改登录密码</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form class="form-horizontal">
+	         <div class="form-group">
+			    <label class="col-sm-2 control-label">手机号</label>
+			    <div class="col-sm-10">
+			      <input type="tel" class="form-control" ng-model="signInObj.mobile" placeholder="登录手机号">
+			    </div>
+			  </div>
+
+			  <div class="form-group">
+			    <label class="col-sm-2 control-label">登录密码</label>
+			    <div class="col-sm-10">
+			      <input type="password" class="form-control" ng-model="signInObj.password1" placeholder="登录密码">
+			    </div>
+			  </div>
+
+			  <div class="form-group">
+			    <label class="col-sm-2 control-label">密码确认</label>
+			    <div class="col-sm-10">
+			      <input type="password" class="form-control" ng-model="signInObj.password2" placeholder="再次输入密码">
+			    </div>
+			  </div>
+
+			  <div class="form-group" >
+			    <label class="col-sm-2 control-label">验证码</label>
+			    <div class="col-sm-10">
+			    	<div class="row">
+					  <div class="col-lg-6">
+					    <div class="input-group">
+					      <input  type="text" class="form-control" ng-model="signInObj.verifyCode" placeholder="验证码">
+					      <span class="input-group-btn">
+					        <button class="btn btn-info" ng-disabled="isGetVerifyCode" ng-click="getVerifyCode(signInObj)" type="button">获取验证码 <span ng-show="isGetVerifyCode" ng-init="signInObj.vcCountdown=120"> ( {{signInObj.vcCountdown}} ) </span> </button>
+					      </span>
+					    </div><!-- /input-group -->
+					  </div><!-- /.col-lg-6 -->
+					</div>
+			      
+			    </div>
+			  </div>
+
+			</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary btn-block" ng-click="signInStore(signInObj, $event)">确认修改</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+  	</div>
+
+	<nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#srNavBar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="srNavBar" ng-init="showingNavtab='memberManage'">
+          <ul class="nav navbar-nav">
+            <li data-toggle="collapse" ng-class="{true:'active', false:''}[showingNavtab=='memberManage']"><a href="javascript:;" ng-click="showingNavtab='memberManage'">会员管理</a></li>
+            <li data-toggle="collapse" ng-class="{true:'active', false:''}[showingNavtab=='memberBenefit']"><a href="javascript:;" ng-click="showingNavtab='memberBenefit'">利益分配</a></li>
+            <li data-toggle="collapse" ng-class="{true:'active', false:''}[showingNavtab=='simulationTrade']"><a href="javascript:;" ng-click="showingNavtab='simulationTrade'">模拟交易</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+	        	<li><a href="javascript:;" ng-click="logoutStore()">退出登录</a></li>
+	      </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+	<br/>
+	<div ng-show="showingNavtab=='memberManage'">
+		<div id="memberSearch" class="input-group">	
+		    <input type="text" class="form-control" placeholder="请输入会员姓名进行搜索" ng-model="searchContent" ng-change="changeContent()" ng-keyup="searchKeyOrder($event)" ng-blur="closeSearchList('searchResult')">
+		    <ul id="searchResult" class="dropdown-menu" aria-labelledby="dLabel">
+		    	<!-- sm = search member -->
+		    	<li id="noResultMsg">无搜索结果</li>
+		   		<li id="sm_{{$index}}" ng-click="openMemberMsg(member)" ng-repeat="member in searchResultList">{{member.userName}}   -   {{member.mobile}}</li>
+		    </ul>
+		    <span class="input-group-btn">
+		    <button type="button" style="margin-left: 4px;" ng-click="openModal()" class="btn btn-info">添加会员</button>
+		    <img style="width: 36px;margin-left: 10px;" src="app/img/memberChart.png" ng-click="switchChart('memberChart')" ng-if="showMemberChart">
+		    <img style="width: 36px;margin-left: 10px;" src="app/img/memberPng.png" ng-click="switchChart('memberPng')" ng-if="showMemberPng">
+		</div>
+		<div id="memberChart" class="panel panel-default">
+		  	<div class="panel-heading">
+		    	<h3 class="panel-title">会员统计分析</h3>
+		  	</div>
+		  	<div id="chartTable" class="panel-body"></div>
+		</div>
+		<div ng-show="showingTab=='searchUserList'" id="memberListCtrl">
+		    <div class="panel panel-default col-xm-12 col-sm-12">
+				<div class="panel-heading">
+					<h3 class="panel-title">会员信息</h3>
+				</div>
+				<div class="panel-body">
+					<form class="row">					
+						<div class="form-group col-xm-12 col-sm-6">
+							<label ><label class="glyphicon glyphicon-user" aria-hidden="true"></label> 姓名<span ng-if="mdfNoUserName">请输入姓名</span></label>
+							<input id="modifyName" ng-model="member.userName" type="text" class="form-control">
+						</div>
+						<div class="form-group col-xm-12 col-sm-6">
+							<label ><lable class="glyphicon glyphicon-phone" aria-hidden="true"></lable> 手机<span ng-if="mdfNoMobile">请输入手机号码</span></label>
+							<input id="modifyMobile" ng-model="member.mobile" type="text" class="form-control" maxlength="11">
+						</div>
+						<div class="referSyl col-xm-12 col-sm-6">
+							<div id="modifyReferSyl" class="form-group col-xm-12 col-sm-12">
+								<label><lable class="glyphicon glyphicon-search" aria-hidden="true"></lable> 推荐人<span ng-if="noReferee">请选择推荐人</span></label>
+								<div class="inputWidth input-group">
+									<input class="form-control" type="text" ng-model="modifyReferee" ng-change="modifyRefereeChange()" ng-disabled="referrerDisabled" placeholder="请搜索已存在的推荐人" ng-keyup="searchModifyKeyOrder($event)" ng-blur="closeSearchList('modifyReferList')"><span class="input-group-btn"><button class="btn btn-default" type="button" disabled="disabled"><lable class="glyphicon glyphicon-search" aria-hidden="true"></lable></button></span>
+								</div>
+								<ul id="modifyReferList" class="dropdown-menu" aria-labelledby="dLabel">
+									<!-- msr = modify search referee -->
+									<li id="noReferMsg">无搜索结果</li>
+									<li ng-if="member.userId != modifyRef.userId" id="msr_{{$index}}" ng-click="getModifyReferee(modifyRef)" ng-repeat="modifyRef in modifyRefereeList">{{modifyRef.userName}}   -   {{modifyRef.mobile}}</li>
+								</ul>
+							</div>
+							<div class="upMember col-xm-12 col-sm-6">
+								<label>上级会员：<a herf="" ng-click="openParentMsg(member)" ng-model="propertyParent">{{propertyParent.userName}}</a></label>
+							</div>
+							<div class="downMember col-xm-12 col-sm-6">
+								<label>下级会员：<a herf="" ng-click="openLeftMsg(member)" ng-model="propertyLeft">{{propertyLeft.userName}}</a>   <a herf="" ng-click="openRightMsg(member)" ng-model="propertyRight">{{propertyRight.userName}}</a></label>
+							</div>
+							<div class="bonus col-xm-12 col-sm-6">
+								<label>红利总额:<label class="money" ng-model="member.money">{{member.money + member.cash}}元</label></label>
+							</div>
+							<div class="bonus col-xm-12 col-sm-6">
+								<label>提现总额:<label class="money" ng-model="member.cash">{{member.cash}}元</label></label>
+								<button type="button" id="cashApplyStyle" class="btn btn-primary pull-right" ng-click="openCashApply()">申请提现</button>
+							</div>
+							<div class="bonus col-xm-12 col-sm-6">
+								<label>当前余额:<label class="money" ng-model="member.cash">{{member.money}}元</label></label>
+							</div>
+							<div id="inputCash" class="bonus col-xm-12 col-sm-6 form-inline">
+								<label class="lableStyle">提现金额:<input type="text" id="cashValue" class="form-control" type="number">   <button type="button" ng-click="submitCashApply()" class="btn btn-success" ng-disabled="dealwithApply" >确定</button>   <button type="button" ng-click="cancelCashApply()" class="btn btn-danger" >取消</button></label>
+							</div>
+						</div>	
+						<div class="form-group col-xm-12 col-sm-6" id="adressProprety">
+							<div class="form-group col-xm-12 col-sm-12">
+								<div class="form-group col-xm-12 col-sm-12" style="padding: 0;">
+									<label>角色</label>
+									<div class="dropdown">
+									  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+									    {{propertyContent}}
+									    <span class="caret" style="color: #000;"></span>
+									  </button>
+									  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+									  	<li ng-click="propertyChange('mcontent')"><a href="#">普通会员</a></li>
+									    <li ng-click="propertyChange('vcontent')"><a href="#">VIP</a></li>
+									    <li ng-click="propertyChange('econtent')"><a href="#">E站</a></li>
+									    <li ng-click="propertyChange('mgcontent')"><a href="#">管理公司</a></li>
+									    <li ng-click="propertyChange('rcontent')"><a href="#">推荐人</a></li>
+									  </ul>
+									</div>
+								</div>
+								<label ><lable class="glyphicon glyphicon-edit" aria-hidden="true"></lable> 地址<span ng-if="mdfNoAddress">请输入地址信息</span></label>
+								<div id="selectAddress" class="row">
+									<label class="lableStyl">{{member.province}}     {{member.city}}     {{member.county}}     {{member.address}}</label>
+									<button type="button" class="btn btn-primary pull-right" ng-click="showSelectOption()">重选地址</button>
+								</div>
+								<div id="selectAddressOption" class="row">
+								  	<div class="col-xm-12 col-md-4">
+								    	<select id="modifyP" class="form-control" ng-model="modifyProvince" ng-options="modifyPr.lable for modifyPr in addressData.provinces">
+								      		<option value="">-- 请选择省份 --</option>
+								    	</select>
+								   	</div>
+								   	<div class="col-xm-12 col-sm-4">
+								    	<select id="modifyC" class="form-control" ng-show="modifyProvince" ng-model="modifyCity" ng-options="modifyCi.lable for modifyCi in modifyProvince.cities">
+								      		<option value="">-- 请选择城市 --</option>
+								    	</select>
+								   	</div>
+								   	<div class="col-xm-12 col-sm-4">
+								    	<select id="modifyCt" class="form-control" ng-if="modifyCity" ng-model="modifyCounty" ng-options="modifyCt for modifyCt in modifyCity.counties">
+								      		<option value="">-- 请选择县或区 --</option>
+								    	</select>
+								   	</div>
+								   	<div id="detailAddressStyl" class="col-xm-12 col-sm-12 form-inline">
+								   		详细地址：<input id="modifyDetail" type="text" class="form-control" id="modifyAddress">
+								   	</div>
+								</div>
+							</div>							
+						</div>	
+						<div class="form-group col-xs-12 col-sm-12">
+							<label ><lable class="glyphicon glyphicon-info-sign" aria-hidden="true"></lable> 备注</label>
+							<textarea ng-model="member.note" class="form-control" id="modifyRemarks"></textarea>
+						</div>
+					</form>
+					<button type="button" id="modifyMemberBtn" ng-click="modifyMemberInfo()" class="modifyBtn btn btn-primary" ng-disabled="modifyDisabled" >修改</button>
+				</div>
+			</div>            
+		</div> 
+
+
+
+		<div class="modal fade" id="addMemberModal" data-backdrop="static">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><lable aria-hidden="true">&times;</lable></button>
+						<h4 class="modal-title">添加会员</h4>    				
+					</div>
+					<div class="modal-body">
+						<form id="memberContent" class="row">
+							<div class="form-group col-xm-12 col-sm-12">
+								<label><lable class="glyphicon glyphicon-search" aria-hidden="true"></lable> 推荐人<span ng-if="noReferee">请选择推荐人</span></label>
+								<div class="input-group">
+									<input class="form-control" type="text" ng-model="referMemberName" ng-change="refereeContent()"placeholder="请搜索已存在的推荐人" ng-disabled="refereeDisabled" ng-keyup="searchNewKeyOrder($event)"><span class="input-group-btn"><button class="btn btn-default" type="button" disabled="disabled"><lable class="glyphicon glyphicon-search" aria-hidden="true"></lable></button></span>
+								</div>
+								<ul id="refereeList" class="dropdown-menu" aria-labelledby="dLabel">
+									<!-- nsr = new search referee -->
+									<li id="noReferResult">无搜索结果</li>
+									<li id="nsr_{{$index}}" ng-click="getRefereeName(referee)" ng-repeat="referee in searchRefereeList">{{referee.userName}}   -   {{referee.mobile}}</li>
+								</ul>
+							</div>
+							<div ng-show="showingHideInput=='showingCreateMsg'">
+								<div class="form-group col-xm-12 col-sm-6">
+									<label><label class="glyphicon glyphicon-user" aria-hidden="true"></label> 姓名<span ng-if="noUserName">请输入用户名</span></label>
+									<input id="userName" type="text" class="form-control">
+								</div>
+								<div class="form-group col-xm-12 col-sm-6">
+									<label><lable class="glyphicon glyphicon-phone" aria-hidden="true"></lable> 手机<span ng-if="errorLengthPhone">请输入11位有效手机号码</span></label>
+									<input id="userPhoneNumber" type="text" class="form-control" maxlength="11">
+								</div>
+								<div class="form-group col-xm-12 col-sm-12">
+									<label><lable class="glyphicon glyphicon-edit" aria-hidden="true"></lable> 地址<span ng-if="noAddress">请输入地址</span></label>
+									<div class="row">
+									  	<div class="col-md-4">
+									    	<select id="selectP" class="form-control" ng-model="province" ng-options="selectProvince.lable for selectProvince in addressData.provinces">
+									      		<option value="">-- 请选择省份 --</option>
+									    	</select>
+									   	</div>
+									   	<div class="col-md-4">
+									    	<select id="selectC" class="form-control" ng-show="province" ng-model="city" ng-options="selectCity.lable for selectCity in province.cities">
+									      		<option value="">-- 请选择城市 --</option>
+									    	</select>
+									   	</div>
+									   	<div class="col-md-4">
+									    	<select id="selectCt" class="form-control" ng-if="city" ng-model="county" ng-options="selectCounty for selectCounty in city.counties">
+									      		<option value="">-- 请选择县或区 --</option>
+									    	</select>
+									   	</div>
+									</div>									
+								</div>
+								<div class="form-group col-sm-12 col-sm-12">
+									<label>详细地址</label>
+							  		<input id="userAddress" class="form-control">
+								</div>
+								<div class="form-group col-xm-12 col-sm-12">
+									<label><lable class="glyphicon glyphicon-info-sign" aria-hidden="true"></lable> 备注</label>
+									<textarea id="userRemarks" class="form-control"></textarea>
+								</div>
+							</div>	
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+		    			<button id="createMemberBtn" type="button" class="btn btn-primary" ng-click="createMember()" ng-disabled="isDisabled">创建</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+	</div>
+	<div data-backdrop="static" class="modal fade" id="alertConfirmPanel" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h4 class="modal-title" style="color: #B2B1B1;">{{alertMsgObj.title}}</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>{{alertMsgObj.msg}}</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	        <button ng-show="{{alertMsgObj.is4confirm}}" type="button" class="btn btn-primary">确认</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->	
+	<div ng-show="showingNavtab=='memberBenefit'">	
+        <div class="userList panel panel-default">
+        	<div class="panel-heading">
+		    	<h3 class="panel-title">利益分配</h3>
+		  	</div>
+		  	<div class="panel-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>类型</th>
+                            <th>买分配比(%)</th>
+                            <th>卖分配比(%)</th>
+                            <th>买方层级</th>
+                            <th>卖方层级</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>会员</td>
+                            <td><input type="number" ng-model="benefitMsg.member.buyPercent" class="form-control"></td>
+                            <td><input type="number" ng-model="benefitMsg.member.sellPercent" class="form-control"></td>
+                            <td><input type="number" ng-model="benefitMsg.member.level" class="form-control"></td>
+                            <td><input type="number" ng-model="benefitMsg.member.sellLevel" class="form-control"></td>
+                            <td><button id="memberBtn" type="button" class="btn btn-primary" ng-click="saveBenefit('member')" ng-disabled="memberBtnDisabled">保存</button></td>
+                        </tr>
+                        <tr>
+                            <td>VIP</td>
+                            <td><input type="number" ng-model="benefitMsg.VIP.buyPercent" class="form-control"></td>
+                            <td><input type="number" ng-model="benefitMsg.VIP.sellPercent" class="form-control"></td>
+                            <td></td>
+                            <td></td>
+                            <td><button id="vipBtn" type="button" class="btn btn-primary" ng-click="saveBenefit('VIP')" ng-disabled="vipBtnDisabled">保存</button></td>
+                        </tr>
+                        <tr>
+                            <td>E站</td>
+                            <td><input type="number" ng-model="benefitMsg.ESite.buyPercent" class="form-control"></td>
+                            <td><input type="number" ng-model="benefitMsg.ESite.sellPercent" class="form-control"></td>
+                            <td></td>
+                            <td></td>
+                            <td><button id="esiteBtn" type="button" class="btn btn-primary" ng-click="saveBenefit('ESite')" ng-disabled="esiteBtnDisabled">保存</button></td>
+                        </tr>
+                        <tr>
+                            <td>管理公司</td>
+                            <td><input type="number" ng-model="benefitMsg.manage.buyPercent" class="form-control"></td>
+                            <td><input type="number" ng-model="benefitMsg.manage.sellPercent" class="form-control"></td>
+                            <td></td>
+                            <td></td>
+                            <td><button id="manageBtn" type="button" class="btn btn-primary" ng-click="saveBenefit('manage')" ng-disabled="manageBtnDisabled">保存</button></td>
+                        </tr>
+                        <tr>
+                            <td>推荐人</td>
+                            <td><input type="number" ng-model="benefitMsg.referrer.buyPercent" class="form-control"></td>
+                            <td><input type="number" ng-model="benefitMsg.referrer.sellPercent" class="form-control"></td>
+                            <td></td>
+                            <td></td>
+                            <td><button id="referrerBtn" type="button" class="btn btn-primary" ng-click="saveBenefit('referrer')" ng-disabled="referrerBtnDisabled">保存</button></td>
+                        </tr>
+                    </tbody>                  
+                </table>
+            </div>
+        </div>
+	</div>
+	<div ng-show="showingNavtab=='simulationTrade'">
+        <div class="userList userList panel panel-default">
+        	<div class="panel-heading">
+		    	<h3 class="panel-title">模拟交易</h3>
+		  	</div>
+		  	<div class="panel-body">
+                <table class="table table-striped table-responsive table-bordered">
+                    <thead>
+                        <tr>
+                            <th id="buyerListSyl" class="row col-xm-12 col-sm-4">
+                            	<div id="buyerSyl" class="col-xm-12 col-sm-12 form-inline buyerSyl">
+	                            	<label>买家</label>
+	                            	<div class="input-group">
+										<input class="form-control" type="text" ng-model="buyerName" ng-change="buyerChange()"placeholder="请搜索买家姓名" ng-keyup="searchBuyerKeyOrder($event)" ng-blur="closeSearchList('buyerSelect')"><span class="input-group-btn"><button class="btn btn-default" type="button" disabled="disabled"><lable class="glyphicon glyphicon-search" aria-hidden="true"></lable></button></span>
+									</div>
+									<ul id="buyerSelect" class="dropdown-menu" aria-labelledby="dLabel">
+										<li id="noBuyer">无搜索结果</li>
+										<li id="buyerList_{{$index}}" ng-click="getBuyerMsg(buyer)" ng-repeat="buyer in buyerList">{{buyer.userName}}</li>
+									</ul>
+								</div>
+                            </th>
+
+                            <th id="sellerListSyl" class="row col-xm-12 col-sm-4">
+                            	<div id="sellerSyl" class="col-xm-12 col-sm-12 form-inline">
+	                            	<label>卖家</label>
+	                            	<div class="input-group">
+										<input class="form-control" type="text" ng-model="sellerName" ng-change="sellerChange()"placeholder="请搜索卖家姓名" ng-keyup="searchSellerKeyOrder($event)" ng-blur="closeSearchList('sellerSelect')"><span class="input-group-btn"><button class="btn btn-default" type="button" disabled="disabled"><lable class="glyphicon glyphicon-search" aria-hidden="true"></lable></button></span>
+									</div>
+									<ul id="sellerSelect" class="dropdown-menu" aria-labelledby="dLabel">
+										<li id="noSeller">无搜索结果</li>
+										<li id="sellerList_{{$index}}" ng-click="getSellerMsg(seller)" ng-repeat="seller in sellerList">{{seller.userName}}</li>
+									</ul>
+								</div>
+                            </th>
+                            <th>交易金额</th>
+                            <th>交易</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><label id="tradeBuyerSyl" >{{buyer.userName}}</label></td>
+                            <td><label id="tradeSellerSyl">{{seller.userName}}</label></td>
+                            <td class="col-xm-12 col-sm-2"><input id="quantity" type="number" class="form-control"></td>
+                            <td class="col-xm-12 col-sm-2"><button id="tradeBtn" type="button" class="btn btn-primary" ng-click="trade()" ng-disabled="tradeDisabled">交易</button></td>
+                        </tr>
+                    </tbody>                  
+                </table>
+                <table class="table table-striped table-responsive table-bordered">
+                	<thead>
+                        <tr>
+                        	<th class="active row col-xm-12 col-sm-3">类型</th>
+                            <th class="success row col-xm-12 col-sm-3">名称</th>
+                            <th class="info row col-xm-12 col-sm-2">角色</th>
+                            <th class="danger row col-xm-12 col-sm-2">获得利益(元)</th>
+                            <th class="warning row col-xm-12 col-sm-2">所占分配比(%)</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="active">买家</td>
+                            <td class="success">{{beneficiaryMsg.buyer.userName}}</label></td>
+                            <td class="info">{{getProperty(beneficiaryMsg.buyer.property)}}</td>
+                            <td class="danger">{{beneficiaryMsg.buyer.profit}}</td>
+                            <td class="warning">{{beneficiaryMsg.buyer.transientData.percent}}</td>
+                        </tr>
+                        <tr>
+                            <td class="active">卖家</td>
+                            <td class="success">{{beneficiaryMsg.seller.userName}}</td>
+                            <td class="info">{{getProperty(beneficiaryMsg.seller.property)}}</td>
+                            <td class="danger">{{beneficiaryMsg.seller.profit}}</td>
+                            <td class="warning">{{beneficiaryMsg.seller.transientData.percent}}</td>
+                        </tr>
+                        <tr>
+                            <td class="active">买家管理公司</td>
+                            <td class="success">{{beneficiaryMsg.buyManage.userName}}</td>
+                            <td class="info">{{getProperty(beneficiaryMsg.buyManage.property)}}</td>
+                            <td class="danger">{{beneficiaryMsg.buyManage.profit}}</td>
+                            <td class="warning">{{beneficiaryMsg.buyManage.transientData.percent}}</td>
+                        </tr>
+                        <tr>
+                            <td class="active">卖家管理公司</td>
+                            <td class="success">{{beneficiaryMsg.sellManage.userName}}</td>
+                            <td class="info">{{getProperty(beneficiaryMsg.sellManage.property)}}</td>
+                            <td class="danger">{{beneficiaryMsg.sellManage.profit}}</td>
+                            <td class="warning">{{beneficiaryMsg.sellManage.transientData.percent}}</td>
+                        </tr>
+                        <tr>
+                            <td class="active">买家推荐人</td>
+                            <td class="success">{{beneficiaryMsg.buyReferrer.userName}}</td>
+                            <td class="info">{{getProperty(beneficiaryMsg.buyReferrer.property)}}</td>
+                            <td class="danger">{{beneficiaryMsg.buyReferrer.profit}}</td>
+                            <td class="warning">{{beneficiaryMsg.buyReferrer.transientData.percent}}</td>
+                        </tr>
+                        <tr>
+                            <td class="active">卖家推荐人</td>
+                            <td class="success">{{beneficiaryMsg.sellReferrer.userName}}</td>
+                            <td class="info">{{getProperty(beneficiaryMsg.sellReferrer.property)}}</td>
+                            <td class="danger">{{beneficiaryMsg.sellReferrer.profit}}</td>
+                            <td class="warning">{{beneficiaryMsg.sellReferrer.transientData.percent}}</td>
+                        </tr>
+                        <tr ng-repeat="a in beneficiaryMsg.buyParent">
+                            <td class="active">买家上级</td>
+                            <td class="success">{{a.userName}}</td>
+                            <td class="info">{{getProperty(a.property)}}</td>
+                            <td class="danger">{{a.profit}}</td>
+                            <td class="warning">{{a.transientData.percent}}</td>
+                        </tr>
+                        <tr ng-if="beneficiaryMsg.root">
+                            <td class="active">总公司</td>
+                            <td class="success">{{beneficiaryMsg.root.userName}}</td>
+                            <td class="info">{{getProperty(beneficiaryMsg.root.property)}}</td>
+                            <td class="danger">{{beneficiaryMsg.root.profit}}</td>
+                            <td class="warning">{{beneficiaryMsg.root.transientData.percent}}</td>
+                        </tr>
+                    </tbody> 
+                </table>
+            </div>
+        </div>  <!-- 模拟交易的table -->
+	</div>
+</div>
+	<script type="text/javascript">
+		  //IE9+下(!-[1,])返回的是false
+		if(navigator.userAgent.indexOf("MSIE") != -1 && (!-[1,])){
+            window.document.getElementById("browserSupportInfo").style.display = 'block';
+        }
+	</script>
+	<script id="syMainJs", data-main="/WebUI/bases/sy", src="/WebUI/bases/jslibs/require-2.1.4.min.js", prod-path="/app", main-ctrl="app", is-min="false"></script>
+  </body>
+  </html>

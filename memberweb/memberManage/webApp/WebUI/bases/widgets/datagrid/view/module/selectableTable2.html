@@ -1,0 +1,29 @@
+<%if (contents.rows.length == 0){ %>
+      asdasdsa
+<%} else {%>
+    <div class="tabTableToolbar">
+    <%
+    var i = 0;
+    _.each(attributes.tools, function(tool){
+    %>
+        <a href="javascript:;" key="<%=tool.key%>"><i class="<%=tool.class%>"></i> <%=tool.lang%></a>  &nbsp;
+    <% })%>
+    </div>
+
+    <ol id="<%= selector%>" class="selectable">
+        <%_.each(contents.rows, function(msg){   %>
+            <li itemId="<%=msg.id%>" class="ui-widget-content" <% if (!!contents.hightlightKey){%> <%=contents.hightlightKey%>="<%=msg[contents.hightlightKey]%>"<%}%>  >
+                <%
+                i = 0;
+                _.each(attributes.keyMap, function(map){
+                %>
+                    <% if (i != 0){%>  : <%}%>
+                    <% if (!_.isEmpty(map.class)){%> <i class="<%=map.class%>"></i><%}%>
+                    <%= msg[map.key] %>
+                <%
+                    i++;
+                })%>
+            </li>
+        <% })%>
+    </ol>
+<%}%>
